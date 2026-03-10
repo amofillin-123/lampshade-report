@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIHOSE 灯罩产品拓展方案 V2 - 底布+包边双色搭配</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f8f6f3; color: #2d2d2d; line-height: 1.7; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+  
+  .header { background: linear-gradient(135deg, #3a3a3a 0%, #1a1a1a 100%); color: white; padding: 40px 30px; border-radius: 16px; margin-bottom: 30px; }
+  .header h1 { font-size: 24px; margin-bottom: 8px; }
+  .header .subtitle { color: #ccc; font-size: 14px; }
+  
+  .product-card { background: white; border-radius: 14px; padding: 28px; display: flex; gap: 28px; margin-bottom: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .product-card img { width: 180px; height: 180px; object-fit: contain; border-radius: 10px; background: #fafafa; }
+  .product-info h2 { font-size: 17px; color: #333; margin-bottom: 12px; line-height: 1.5; }
+  .product-info .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+  .product-info .tag { background: #f0ede8; padding: 4px 12px; border-radius: 20px; font-size: 13px; color: #666; }
+  .color-swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .color-swatch { display: flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 16px; font-size: 12px; border: 1px solid #e0e0e0; }
+  .swatch-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #ccc; }
+
+  .section { background: white; border-radius: 14px; padding: 28px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .section h2 { font-size: 20px; color: #333; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #f0ede8; }
+  .section h3 { font-size: 16px; color: #555; margin: 16px 0 10px; }
+
+  .trend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .trend-item { background: #faf8f5; border-radius: 10px; padding: 16px; border-left: 4px solid; }
+  .trend-item.hot { border-color: #e74c3c; }
+  .trend-item.warm { border-color: #f39c12; }
+  .trend-item .trend-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .trend-item .trend-source { font-size: 12px; color: #999; }
+  .trend-item .trend-desc { font-size: 13px; color: #666; margin-top: 6px; }
+
+  .palette-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+  .palette-chip { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px; background: white; border: 1px solid #e8e8e8; }
+  .palette-color { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); }
+  .palette-label { font-size: 13px; }
+  .palette-label strong { display: block; font-size: 13px; }
+  .palette-label span { color: #999; font-size: 11px; }
+
+  /* Main Table - V2 with dual color */
+  .plan-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 16px; }
+  .plan-table thead th { background: #3a3a3a; color: white; padding: 12px 10px; font-size: 12px; font-weight: 500; text-align: left; white-space: nowrap; }
+  .plan-table thead th:first-child { border-radius: 10px 0 0 0; }
+  .plan-table thead th:last-child { border-radius: 0 10px 0 0; }
+  .plan-table tbody td { padding: 14px 10px; font-size: 13px; border-bottom: 1px solid #f0ede8; vertical-align: top; }
+  .plan-table tbody tr:hover { background: #faf8f5; }
+  .plan-table tbody tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+  .plan-table tbody tr:last-child td:last-child { border-radius: 0 0 10px 0; }
+
+  .heat-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .heat-high { background: #fde8e8; color: #c0392b; }
+  .heat-mid { background: #fef3e2; color: #e67e22; }
+  .heat-low { background: #e8f5e9; color: #27ae60; }
+
+  /* Dual color swatch */
+  .dual-color { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .dual-swatch { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); width: 40px; height: 24px; }
+  .dual-swatch .left { width: 50%; }
+  .dual-swatch .right { width: 50%; }
+  .dual-label { font-size: 12px; color: #555; line-height: 1.4; }
+  .dual-label strong { color: #333; }
+
+  /* Lampshade Preview */
+  .shade-preview { position: relative; width: 64px; height: 56px; margin: 0 auto; }
+  .shade-body { width: 64px; height: 48px; border-radius: 4px 4px 32px 32px / 4px 4px 20px 20px; position: relative; overflow: hidden; }
+  .shade-trim { position: absolute; bottom: 0; left: 0; right: 0; height: 12px; border-radius: 0 0 32px 32px / 0 0 20px 20px; }
+  .shade-petal { position: absolute; bottom: -3px; width: 14px; height: 10px; border-radius: 50% 50% 50% 50%; }
+
+  /* Detail Cards */
+  .plan-detail { background: #faf8f5; border-radius: 12px; padding: 22px; margin-bottom: 16px; border: 1px solid #ece9e3; }
+  .plan-detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .plan-number { background: #3a3a3a; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+  .plan-detail h3 { font-size: 16px; color: #333; flex: 1; margin-left: 10px; }
+  .plan-detail p { font-size: 13px; color: #555; margin-bottom: 6px; }
+  .plan-detail .keywords { margin-top: 8px; }
+  .plan-detail .keyword-tag { display: inline-block; background: #e8e4dd; padding: 3px 10px; border-radius: 14px; font-size: 11px; color: #666; margin: 2px 4px 2px 0; }
+  
+  .color-combo-box { display: inline-flex; align-items: center; gap: 10px; background: white; padding: 8px 14px; border-radius: 10px; border: 1px solid #e0e0e0; margin: 8px 0; }
+  .combo-dot { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+  .combo-plus { color: #999; font-size: 14px; }
+  .combo-text { font-size: 12px; color: #555; }
+  .combo-text strong { display: block; color: #333; }
+
+  .footer { text-align: center; color: #bbb; font-size: 12px; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e8e8e8; }
+
+  @media (max-width: 700px) {
+    .product-card { flex-direction: column; align-items: center; }
+    .product-card img { width: 160px; height: 160px; }
+    .trend-grid { grid-template-columns: 1fr; }
+    .plan-table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>🔮 VIHOSE 花瓣边灯罩 — 底布+包边双色搭配拓展方案</h1>
+  <div class="subtitle">基于 TikTok / Pinterest / Instagram 2026 家居流行趋势 · V2 优化版 · 2026-03-10</div>
+</div>
+
+<!-- Product Overview -->
+<div class="product-card">
+  <img src="https://m.media-amazon.com/images/I/61qx4mDZ9RL._AC_SX522_PIbundle-6,TopRight,0,0_SH20_.jpg" alt="VIHOSE Lampshade">
+  <div class="product-info">
+    <h2>VIHOSE 6 Pack Scalloped Bell Chandelier Lamp Shades (Petal Edge · Clip-On)</h2>
+    <div class="meta">
+      <span class="tag">📐 2.9" × 5.9" × 5.1"H</span>
+      <span class="tag">🔧 Clip-On</span>
+      <span class="tag">🧵 Fabric 布艺</span>
+      <span class="tag">💰 $31.99 / 6Pack</span>
+    </div>
+    <p style="font-size:13px;color:#888;margin-bottom:8px;">💡 产品结构 = <strong>底布（灯罩主体）</strong> + <strong>包边（花瓣边缘 Petal Trim）</strong>，两个颜色可以独立搭配</p>
+    <div style="font-size:13px;color:#555;font-weight:600;">当前变体（底布色=包边色，同色）：</div>
+    <div class="color-swatches">
+      <div class="color-swatch"><div class="swatch-dot" style="background:#5a8a5a;"></div>Green</div>
+      <div class="color-swatch"><div class="swatch-dot" style="background:#4a7fb5;"></div>Blue</div>
+      <div class="color-swatch"><div class="swatch-dot" style="background:#d4874d;"></div>Orange</div>
+      <div class="color-swatch"><div class="swatch-dot" style="background:#d4829a;"></div>Pink</div>
+    </div>
+  </div>
+</div>
+
+<!-- Trend Summary (compact) -->
+<div class="section">
+  <h2>📊 2026 社媒趋势速览</h2>
+  <div class="trend-grid">
+    <div class="trend-item hot">
+      <div class="trend-name">Grandmillennial 新复古</div>
+      <div class="trend-source">Pinterest / Instagram / TikTok</div>
+      <div class="trend-desc">花边、褶皱、扇贝边灯罩是核心元素。花瓣边设计完美契合！</div>
+    </div>
+    <div class="trend-item hot">
+      <div class="trend-name">Whimsical 异想天开</div>
+      <div class="trend-source">Country Living · 100位设计师</div>
+      <div class="trend-desc">大胆配色、撞色搭配、趣味表达——底布包边撞色正是这个趋势！</div>
+    </div>
+    <div class="trend-item hot">
+      <div class="trend-name">#LampTok 灯罩美学</div>
+      <div class="trend-source">TikTok 持续爆火</div>
+      <div class="trend-desc">复古丝绸、对比色包边灯罩在 TikTok 上播放量极高。</div>
+    </div>
+    <div class="trend-item warm">
+      <div class="trend-name">Pinterest 2026 年度色</div>
+      <div class="trend-source">Pinterest Palette 2026</div>
+      <div class="trend-desc">Persimmon 柿橙 · Cool Blue 冰蓝 · Plum Noir 暗梅 · Wasabi 芥末绿</div>
+    </div>
+    <div class="trend-item warm">
+      <div class="trend-name">Earthy Mid-tones 大地中间调</div>
+      <div class="trend-source">Elle Decor · 设计师推荐</div>
+      <div class="trend-desc">Chalky Rose · Smoky Blue · Terracotta · Dusty Olive · Soft Charcoal</div>
+    </div>
+    <div class="trend-item warm">
+      <div class="trend-name">Warm Neutrals 暖中性色</div>
+      <div class="trend-source">Decorilla / Jane at Home</div>
+      <div class="trend-desc">Cream / Linen / Oatmeal 取代冷灰白，成为家居新基调。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Table V2 -->
+<div class="section">
+  <h2>📋 10 个双色搭配拓展方案</h2>
+  <p style="font-size:13px;color:#888;margin-bottom:14px;">每个方案包含<strong>底布色（灯罩主体）</strong>和<strong>包边色（花瓣边缘）</strong>两个颜色的搭配建议</p>
+  
+  <table class="plan-table">
+    <thead>
+      <tr>
+        <th style="width:30px">#</th>
+        <th style="width:130px">方案名称</th>
+        <th style="width:200px">底布色 + 包边色</th>
+        <th>搭配效果</th>
+        <th style="width:130px">对应风格</th>
+        <th style="width:120px">目标客群</th>
+        <th style="width:50px">热度</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 1 -->
+      <tr>
+        <td><strong>1</strong></td>
+        <td><strong>经典奶油金</strong><br><span style="font-size:11px;color:#999;">Cream & Gold</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#f5edd6;"></div><div class="right" style="background:#c8a96e;"></div></div>
+            <div class="dual-label">底布 <strong>Cream 奶油白</strong><br>包边 <strong>Antique Gold 古金</strong></div>
+          </div>
+        </td>
+        <td>经典高级感，奶油底+金色花瓣边，优雅大气，适配几乎所有吊灯</td>
+        <td>Quiet Luxury<br>Traditional</td>
+        <td>基础刚需款<br>所有风格通吃</td>
+        <td><span class="heat-badge heat-high">🔥 极高</span></td>
+      </tr>
+      <!-- 2 -->
+      <tr>
+        <td><strong>2</strong></td>
+        <td><strong>奶油纯色</strong><br><span style="font-size:11px;color:#999;">Cream on Cream</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#f5edd6;"></div><div class="right" style="background:#efe5cc;"></div></div>
+            <div class="dual-label">底布 <strong>Cream 奶油白</strong><br>包边 <strong>Ivory 象牙白</strong></div>
+          </div>
+        </td>
+        <td>同色系微差搭配，干净百搭，最安全的基础色，弥补当前产品线最大空缺</td>
+        <td>Minimalist<br>Farmhouse</td>
+        <td>基础刚需<br>品类第一色</td>
+        <td><span class="heat-badge heat-high">🔥 极高</span></td>
+      </tr>
+      <!-- 3 -->
+      <tr>
+        <td><strong>3</strong></td>
+        <td><strong>暗梅紫金</strong><br><span style="font-size:11px;color:#999;">Plum Noir & Gold</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#5c3a5e;"></div><div class="right" style="background:#c8a96e;"></div></div>
+            <div class="dual-label">底布 <strong>Plum Noir 暗梅紫</strong><br>包边 <strong>Antique Gold 古金</strong></div>
+          </div>
+        </td>
+        <td>深紫底+金边，Art Deco 戏剧感爆棚，TikTok #LampTok 爆款潜质</td>
+        <td>NeoDeco Glam<br>Maximalism</td>
+        <td>年轻设计爱好者<br>追潮流人群</td>
+        <td><span class="heat-badge heat-high">🔥 极高</span></td>
+      </tr>
+      <!-- 4 -->
+      <tr>
+        <td><strong>4</strong></td>
+        <td><strong>灰粉白边</strong><br><span style="font-size:11px;color:#999;">Dusty Rose & White</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#c9a08a;"></div><div class="right" style="background:#f5edd6;"></div></div>
+            <div class="dual-label">底布 <strong>Dusty Rose 灰粉</strong><br>包边 <strong>Cream White 奶油白</strong></div>
+          </div>
+        </td>
+        <td>温柔灰粉底+白色花瓣边，法式浪漫感，卧室首选配色</td>
+        <td>Grandmillennial<br>French Country</td>
+        <td>25-40岁女性<br>卧室/客厅</td>
+        <td><span class="heat-badge heat-high">🔥 高</span></td>
+      </tr>
+      <!-- 5 -->
+      <tr>
+        <td><strong>5</strong></td>
+        <td><strong>鼠尾草绿棕边</strong><br><span style="font-size:11px;color:#999;">Sage & Tan</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#a3b18a;"></div><div class="right" style="background:#c4a882;"></div></div>
+            <div class="dual-label">底布 <strong>Sage Green 鼠尾草绿</strong><br>包边 <strong>Tan 浅棕/驼色</strong></div>
+          </div>
+        </td>
+        <td>自然绿底+大地色边，有机田园风，像一片嫩叶的感觉</td>
+        <td>Cottagecore<br>Organic Modern</td>
+        <td>自然风爱好者<br>卧室/书房</td>
+        <td><span class="heat-badge heat-high">🔥 高</span></td>
+      </tr>
+      <!-- 6 -->
+      <tr>
+        <td><strong>6</strong></td>
+        <td><strong>赤陶橙米边</strong><br><span style="font-size:11px;color:#999;">Terracotta & Cream</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#c47a4a;"></div><div class="right" style="background:#f0e4d0;"></div></div>
+            <div class="dual-label">底布 <strong>Terracotta 赤陶</strong><br>包边 <strong>Cream 奶油白</strong></div>
+          </div>
+        </td>
+        <td>温暖赤陶底+奶油边，Boho波西米亚质感，秋冬超应季</td>
+        <td>Afrohemian<br>Boho / SW</td>
+        <td>波西米亚爱好者<br>民族风客群</td>
+        <td><span class="heat-badge heat-mid">🔶 中高</span></td>
+      </tr>
+      <!-- 7 -->
+      <tr>
+        <td><strong>7</strong></td>
+        <td><strong>深蓝白边</strong><br><span style="font-size:11px;color:#999;">Navy & White</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#2c3e6b;"></div><div class="right" style="background:#f5f0e8;"></div></div>
+            <div class="dual-label">底布 <strong>Navy 海军蓝</strong><br>包边 <strong>White 白色</strong></div>
+          </div>
+        </td>
+        <td>经典蓝白撞色，Preppy/航海风，清爽利落，男女皆宜</td>
+        <td>Coastal Grandma<br>Nautical/Preppy</td>
+        <td>沿海风格<br>客厅/书房</td>
+        <td><span class="heat-badge heat-mid">🔶 中高</span></td>
+      </tr>
+      <!-- 8 -->
+      <tr>
+        <td><strong>8</strong></td>
+        <td><strong>芥末绿白边</strong><br><span style="font-size:11px;color:#999;">Wasabi & White</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#a8b547;"></div><div class="right" style="background:#f5f0e8;"></div></div>
+            <div class="dual-label">底布 <strong>Wasabi 芥末黄绿</strong><br>包边 <strong>White 白色</strong></div>
+          </div>
+        </td>
+        <td>Pinterest年度色+白边缓冲，大胆但不过分，极强社媒传播力</td>
+        <td>Whimsical<br>Dopamine Decor</td>
+        <td>Z世代<br>个性表达派</td>
+        <td><span class="heat-badge heat-mid">🔶 中高</span></td>
+      </tr>
+      <!-- 9 -->
+      <tr>
+        <td><strong>9</strong></td>
+        <td><strong>薰衣草粉边</strong><br><span style="font-size:11px;color:#999;">Lavender & Blush</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#b8a0c8;"></div><div class="right" style="background:#e8c4c4;"></div></div>
+            <div class="dual-label">底布 <strong>Lavender 薰衣草紫</strong><br>包边 <strong>Blush Pink 腮红粉</strong></div>
+          </div>
+        </td>
+        <td>紫粉梦幻撞色，"Soft Life"美学代表，卧室拍照超出片</td>
+        <td>Grandmillennial<br>Romantic</td>
+        <td>年轻女性<br>浪漫卧室</td>
+        <td><span class="heat-badge heat-mid">🔶 中</span></td>
+      </tr>
+      <!-- 10 -->
+      <tr>
+        <td><strong>10</strong></td>
+        <td><strong>暖亚麻棕边</strong><br><span style="font-size:11px;color:#999;">Linen & Mocha</span></td>
+        <td>
+          <div class="dual-color">
+            <div class="dual-swatch"><div class="left" style="background:#d4c8a8;"></div><div class="right" style="background:#8b6a4f;"></div></div>
+            <div class="dual-label">底布 <strong>Warm Linen 暖亚麻</strong><br>包边 <strong>Mocha 摩卡棕</strong></div>
+          </div>
+        </td>
+        <td>同色系深浅搭配，低调质感，"老钱风"静奢美学</td>
+        <td>Quiet Luxury<br>Japandi</td>
+        <td>极简/日式<br>中性风格</td>
+        <td><span class="heat-badge heat-mid">🔶 中</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Detailed Plans -->
+<div class="section">
+  <h2>📝 各方案详细说明</h2>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">1</div>
+      <h3>经典奶油金 Cream & Gold — 最高潜力款</h3>
+      <span class="heat-badge heat-high">🔥 极高</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#f5edd6;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#c8a96e;"></div>
+      <div class="combo-text"><strong>奶油白底布 + 古金色包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>Cream/Gold 是灯罩品类里永恒的经典搭配。奶油白底保证百搭，金色花瓣边提升高级感。在 Grandmillennial 风格中，金边花瓣灯罩几乎是"标配"。</p>
+    <p><strong>搭配逻辑：</strong>奶油白做大面积底色，金色只出现在花瓣边缘——用量小但效果突出，成本增加有限。</p>
+    <p><strong>竞品现状：</strong>Amazon 上大部分 clip-on 灯罩是纯色的，带金边包边的花瓣灯罩很少，差异化显著。</p>
+    <div class="keywords">
+      <span class="keyword-tag">cream gold scalloped shade</span>
+      <span class="keyword-tag">gold trim lampshade</span>
+      <span class="keyword-tag">antique gold chandelier shade</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">2</div>
+      <h3>奶油纯色 Cream on Cream — 必做基础款</h3>
+      <span class="heat-badge heat-high">🔥 极高</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#f5edd6;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#efe5cc;"></div>
+      <div class="combo-text"><strong>奶油白底布 + 象牙白包边</strong>（微色差同色系）</div>
+    </div>
+    <p><strong>为什么必做：</strong>白/米色是 chandelier shade 品类的绝对销量冠军。你目前产品线完全没有这个颜色，这是最大的短板。这款不需要讨论"要不要做"，一定要做。</p>
+    <p><strong>搭配逻辑：</strong>底布和包边都是白色系，但做微小的深浅差，让花瓣边在视觉上有层次而不是完全平面。</p>
+    <div class="keywords">
+      <span class="keyword-tag">cream chandelier shade</span>
+      <span class="keyword-tag">ivory clip on shade</span>
+      <span class="keyword-tag">white scalloped shade</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">3</div>
+      <h3>暗梅紫金 Plum Noir & Gold — 社媒爆款潜质</h3>
+      <span class="heat-badge heat-high">🔥 极高</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#5c3a5e;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#c8a96e;"></div>
+      <div class="combo-text"><strong>深梅紫底布 + 古金色包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>Plum Noir 是 Pinterest 2026 年度色！深紫配金色是 Art Deco / NeoDeco 的标志性搭配，视觉冲击力极强。TikTok #LampTok 上这类"moody luxury"灯罩内容播放量动辄百万。</p>
+    <p><strong>搭配逻辑：</strong>深色底+金属色边 = 戏剧感+高级感。花瓣边用金色，像紫色花朵的金色花蕊，隐喻自然又华丽。</p>
+    <p><strong>⚠️ 注意：</strong>紫色灯罩在亚马逊上极少见，先发优势明显，但也意味着需要教育市场。建议配强视觉 A+ 内容。</p>
+    <div class="keywords">
+      <span class="keyword-tag">plum gold lampshade</span>
+      <span class="keyword-tag">purple gold trim shade</span>
+      <span class="keyword-tag">art deco chandelier shade</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">4</div>
+      <h3>灰粉白边 Dusty Rose & White — 法式浪漫</h3>
+      <span class="heat-badge heat-high">🔥 高</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#c9a08a;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#f5edd6;"></div>
+      <div class="combo-text"><strong>灰粉底布 + 奶油白包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>与现有 Pink 完全不同——Dusty Rose 偏灰偏暖，是"祖母的优雅粉"而非少女粉。白色花瓣边让整体更清爽，不会过于甜腻。</p>
+    <p><strong>搭配逻辑：</strong>低饱和灰粉做底，白色花瓣边做"提亮"。像裱花蛋糕的粉白搭配，自带法式氛围。</p>
+    <div class="keywords">
+      <span class="keyword-tag">dusty rose white trim shade</span>
+      <span class="keyword-tag">blush scalloped shade</span>
+      <span class="keyword-tag">French country lampshade</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">5</div>
+      <h3>鼠尾草绿棕边 Sage & Tan — 自然有机</h3>
+      <span class="heat-badge heat-high">🔥 高</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#a3b18a;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#c4a882;"></div>
+      <div class="combo-text"><strong>鼠尾草绿底布 + 驼色/浅棕包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>你现有 Green 偏鲜亮，Sage Green 是完全不同的审美——灰调、柔和、像干燥草本。驼色包边强化自然/有机质感。</p>
+    <p><strong>搭配逻辑：</strong>绿+棕 = 自然界最常见的颜色组合（叶子+树干），天然和谐。Cottagecore 田园风的经典配色。</p>
+    <div class="keywords">
+      <span class="keyword-tag">sage green tan trim shade</span>
+      <span class="keyword-tag">cottagecore lamp shade</span>
+      <span class="keyword-tag">organic modern lighting</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">6</div>
+      <h3>赤陶橙米边 Terracotta & Cream — 大地暖调</h3>
+      <span class="heat-badge heat-mid">🔶 中高</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#c47a4a;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#f0e4d0;"></div>
+      <div class="combo-text"><strong>赤陶底布 + 奶油白包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>Terracotta 是 2026 大地色系核心色调，与现有 Orange 不同——像烧过的陶罐而非水果橙。白色包边柔化暖调，让色彩不会过于沉重。</p>
+    <p><strong>最佳场景：</strong>秋冬季节主推，Boho/Southwest/Mediterranean 风格首选。</p>
+    <div class="keywords">
+      <span class="keyword-tag">terracotta cream lampshade</span>
+      <span class="keyword-tag">boho bell shade</span>
+      <span class="keyword-tag">southwest decor lamp</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">7</div>
+      <h3>深蓝白边 Navy & White — 经典撞色</h3>
+      <span class="heat-badge heat-mid">🔶 中高</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#2c3e6b;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#f5f0e8;"></div>
+      <div class="combo-text"><strong>海军蓝底布 + 白色包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>蓝白撞色是美国最经典的家居配色之一，Preppy/Nautical 永不过时。深蓝底+白色花瓣边，轮廓分明，精致利落。</p>
+    <p><strong>与现有 Blue 区别：</strong>现有蓝偏中等饱和度且同色包边。Navy + White 是完全不同的视觉——更深沉、更经典、更有对比。</p>
+    <div class="keywords">
+      <span class="keyword-tag">navy white chandelier shade</span>
+      <span class="keyword-tag">nautical lamp shade</span>
+      <span class="keyword-tag">coastal preppy decor</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">8</div>
+      <h3>芥末绿白边 Wasabi & White — Pinterest 年度色</h3>
+      <span class="heat-badge heat-mid">🔶 中高</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#a8b547;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#f5f0e8;"></div>
+      <div class="combo-text"><strong>芥末黄绿底布 + 白色包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>Pinterest 2026 年度色，设计师说"Wasabi 做灯罩颜色尤其好看"。白色包边缓冲大胆色彩，让它更易被接受。</p>
+    <p><strong>⚠️ 风险：</strong>颜色较大胆，建议小批量测试。但社媒传播力极强——想象一下 TikTok 上"我找到了 Pinterest 年度色的灯罩！"这种内容。</p>
+    <div class="keywords">
+      <span class="keyword-tag">chartreuse white shade</span>
+      <span class="keyword-tag">wasabi green lampshade</span>
+      <span class="keyword-tag">dopamine decor lighting</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">9</div>
+      <h3>薰衣草粉边 Lavender & Blush — 梦幻撞色</h3>
+      <span class="heat-badge heat-mid">🔶 中</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#b8a0c8;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#e8c4c4;"></div>
+      <div class="combo-text"><strong>薰衣草紫底布 + 腮红粉包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>紫+粉是 TikTok 卧室改造视频里的高频色彩组合，"Soft Life"美学的代表。花瓣边用粉色像薰衣草花瓣泛着粉晕。</p>
+    <p><strong>最佳场景：</strong>卧室专属配色，目标年轻女性客群。拍照上镜，UGC 内容潜力大。</p>
+    <div class="keywords">
+      <span class="keyword-tag">lavender blush lampshade</span>
+      <span class="keyword-tag">purple pink shade bedroom</span>
+      <span class="keyword-tag">romantic scalloped shade</span>
+    </div>
+  </div>
+
+  <div class="plan-detail">
+    <div class="plan-detail-header">
+      <div class="plan-number">10</div>
+      <h3>暖亚麻棕边 Linen & Mocha — 低调质感</h3>
+      <span class="heat-badge heat-mid">🔶 中</span>
+    </div>
+    <div class="color-combo-box">
+      <div class="combo-dot" style="background:#d4c8a8;"></div>
+      <span class="combo-plus">+</span>
+      <div class="combo-dot" style="background:#8b6a4f;"></div>
+      <div class="combo-text"><strong>暖亚麻底布 + 摩卡棕包边</strong></div>
+    </div>
+    <p><strong>为什么推荐：</strong>同色系深浅搭配，深棕色花瓣边给亚麻底"画了个轮廓"，精致但不张扬。Quiet Luxury / Japandi 风格首选。</p>
+    <p><strong>搭配逻辑：</strong>像一杯拿铁——亚麻底是牛奶，摩卡边是咖啡。Tobacco Brown 也是 2026 设计师推荐色之一。</p>
+    <div class="keywords">
+      <span class="keyword-tag">linen mocha lampshade</span>
+      <span class="keyword-tag">beige brown shade</span>
+      <span class="keyword-tag">quiet luxury lighting</span>
+    </div>
+  </div>
+</div>
+
+<!-- Priority Matrix -->
+<div class="section">
+  <h2>🎯 优先级建议</h2>
+  <table class="plan-table">
+    <thead>
+      <tr>
+        <th>优先级</th>
+        <th>方案</th>
+        <th>底布 + 包边</th>
+        <th>理由</th>
+        <th>风险</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="heat-badge heat-high">P0 立刻</span></td>
+        <td><strong>奶油纯色 + 奶油金</strong></td>
+        <td>Cream+Ivory / Cream+Gold</td>
+        <td>品类刚需 #1 色 + 最经典高级搭配，弥补最大短板</td>
+        <td>极低</td>
+      </tr>
+      <tr>
+        <td><span class="heat-badge heat-high">P1 优先</span></td>
+        <td><strong>灰粉白边 + 鼠尾草棕边</strong></td>
+        <td>DustyRose+White / Sage+Tan</td>
+        <td>与现有 Pink/Green 差异化，切 Grandmillennial + Cottagecore</td>
+        <td>低</td>
+      </tr>
+      <tr>
+        <td><span class="heat-badge heat-mid">P2 跟进</span></td>
+        <td><strong>暗梅紫金 + 深蓝白边</strong></td>
+        <td>Plum+Gold / Navy+White</td>
+        <td>Pinterest年度色 + 经典撞色，填补深色系空白</td>
+        <td>中低</td>
+      </tr>
+      <tr>
+        <td><span class="heat-badge heat-mid">P2 跟进</span></td>
+        <td><strong>赤陶米边 + 亚麻棕边</strong></td>
+        <td>Terracotta+Cream / Linen+Mocha</td>
+        <td>大地色系组合，Boho/Organic 风格覆盖</td>
+        <td>低</td>
+      </tr>
+      <tr>
+        <td><span class="heat-badge heat-low">P3 测试</span></td>
+        <td><strong>芥末白边 + 薰衣草粉边</strong></td>
+        <td>Wasabi+White / Lavender+Blush</td>
+        <td>个性撞色，小批量测市场反应，社媒传播力强</td>
+        <td>中</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  创新小章 🐙 · 基于 TikTok / Pinterest / Instagram 2026 趋势 · 底布+包边双色搭配版 · 2026-03-10
+</div>
+
+</div>
+</body>
+</html>
